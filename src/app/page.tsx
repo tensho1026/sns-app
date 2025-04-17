@@ -1,103 +1,123 @@
-import Image from "next/image";
-
+import Link from "next/link"
+import { PlusCircle, MoreVertical, Heart, MessageCircle, Share2, Trash2 } from "lucide-react"
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Dummy post data
+  const posts = [
+    {
+      id: 1,
+      author: "田中 太郎",
+      username: "@tanaka_taro",
+      avatar: "/placeholder.svg?height=40&width=40",
+      content: "今日は素晴らしい天気です！公園でピクニックをしています。",
+      image: "/placeholder.svg?height=400&width=600",
+      likes: 24,
+      comments: 3,
+      timestamp: "2時間前",
+    },
+    {
+      id: 2,
+      author: "佐藤 花子",
+      username: "@sato_hanako",
+      avatar: "/placeholder.svg?height=40&width=40",
+      content: "新しいカフェを見つけました！コーヒーがとても美味しいです。おすすめです！",
+      image: "/placeholder.svg?height=400&width=600",
+      likes: 42,
+      comments: 7,
+      timestamp: "4時間前",
+    },
+    {
+      id: 3,
+      author: "鈴木 一郎",
+      username: "@suzuki_ichiro",
+      avatar: "/placeholder.svg?height=40&width=40",
+      content: "今日から新しいプロジェクトが始まりました。頑張ります！",
+      likes: 18,
+      comments: 2,
+      timestamp: "6時間前",
+    },
+  ]
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <main className="min-h-screen bg-gray-100">
+      <header className="bg-white p-4 shadow-sm sticky top-0 z-10">
+        <div className="max-w-2xl mx-auto flex justify-between items-center">
+          <h1 className="text-xl font-bold text-gray-800">SNSアプリ</h1>
+          <div className="flex items-center space-x-4">
+            <div className="w-8 h-8 rounded-full bg-gray-200"></div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </header>
+
+      <div className="max-w-2xl mx-auto pt-4 pb-20">
+        {posts.map((post) => (
+          <div key={post.id} className="bg-white rounded-lg shadow mb-4 overflow-hidden">
+            <div className="p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex items-center">
+                  <img
+                    src={post.avatar || "/placeholder.svg"}
+                    alt={post.author}
+                    className="w-10 h-10 rounded-full mr-3"
+                  />
+                  <div>
+                    <div className="font-semibold">{post.author}</div>
+                    <div className="text-gray-500 text-sm">{post.username}</div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <button
+                    className="text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors"
+                    aria-label="投稿を削除"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                  <button
+                    className="text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors"
+                    aria-label="その他のオプション"
+                  >
+                    <MoreVertical size={18} />
+                  </button>
+                </div>
+              </div>
+              <p className="my-3">{post.content}</p>
+              {post.image && (
+                <div className="mt-2 rounded-lg overflow-hidden">
+                  <img src={post.image || "/placeholder.svg"} alt="投稿画像" className="w-full h-auto" />
+                </div>
+              )}
+              <div className="mt-4 flex justify-between text-gray-500">
+                <div className="flex items-center space-x-1">
+                  <button className="flex items-center hover:text-red-500 transition-colors">
+                    <Heart size={18} className="mr-1" />
+                    <span>{post.likes}</span>
+                  </button>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <button className="flex items-center hover:text-blue-500 transition-colors">
+                    <MessageCircle size={18} className="mr-1" />
+                    <span>{post.comments}</span>
+                  </button>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <button className="flex items-center hover:text-green-500 transition-colors">
+                    <Share2 size={18} />
+                  </button>
+                </div>
+                <div className="text-sm">{post.timestamp}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 投稿作成ボタン */}
+      <Link
+        href="/create-post"
+        className="fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 shadow-lg transition-colors"
+      >
+        <PlusCircle size={24} />
+        <span className="sr-only">新規投稿を作成</span>
+      </Link>
+    </main>
+  )
 }
