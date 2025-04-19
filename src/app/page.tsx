@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { PlusCircle, MoreVertical, Heart, MessageCircle, Share2, Trash2 } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
 export default function Home() {
   // Dummy post data
   const posts = [
@@ -9,7 +10,7 @@ export default function Home() {
       username: "@tanaka_taro",
       avatar: "/placeholder.svg?height=40&width=40",
       content: "今日は素晴らしい天気です！公園でピクニックをしています。",
-      image: "/placeholder.svg?height=400&width=600",
+      image: "/keshiki.jpg",
       likes: 24,
       comments: 3,
       timestamp: "2時間前",
@@ -20,7 +21,7 @@ export default function Home() {
       username: "@sato_hanako",
       avatar: "/placeholder.svg?height=40&width=40",
       content: "新しいカフェを見つけました！コーヒーがとても美味しいです。おすすめです！",
-      image: "/placeholder.svg?height=400&width=600",
+      image: "",
       likes: 42,
       comments: 7,
       timestamp: "4時間前",
@@ -43,7 +44,8 @@ export default function Home() {
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-800">SNSアプリ</h1>
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 rounded-full bg-gray-200"></div>
+            {/* <div className="w-8 h-8 rounded-full bg-gray-200"></div> */}
+            <UserButton/>
           </div>
         </div>
       </header>
@@ -98,11 +100,11 @@ export default function Home() {
                     <span>{post.comments}</span>
                   </button>
                 </div>
-                <div className="flex items-center space-x-1">
+                {/* <div className="flex items-center space-x-1">
                   <button className="flex items-center hover:text-green-500 transition-colors">
                     <Share2 size={18} />
                   </button>
-                </div>
+                </div> */}
                 <div className="text-sm">{post.timestamp}</div>
               </div>
             </div>
