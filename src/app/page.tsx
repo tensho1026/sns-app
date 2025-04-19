@@ -7,6 +7,7 @@ import {
   MessageCircle,
   Share2,
   Trash2,
+  Plus
 } from "lucide-react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
@@ -70,7 +71,6 @@ export default function Home() {
         <div className='max-w-2xl mx-auto flex justify-between items-center'>
           <h1 className='text-xl font-bold text-gray-800'>SNSアプリ</h1>
           <div className='flex items-center space-x-4'>
-            {/* <div className="w-8 h-8 rounded-full bg-gray-200"></div> */}
             <UserButton />
           </div>
         </div>
@@ -127,11 +127,7 @@ export default function Home() {
                     <span>{post.comments}</span>
                   </button>
                 </div>
-                {/* <div className="flex items-center space-x-1">
-                  <button className="flex items-center hover:text-green-500 transition-colors">
-                    <Share2 size={18} />
-                  </button>
-                </div> */}
+            
                 <div className='text-sm'>{post.timestamp}</div>
               </div>
             </div>
@@ -144,7 +140,7 @@ export default function Home() {
         href='/create-post'
         className='fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 shadow-lg transition-colors'
       >
-        <PlusCircle size={24} />
+        <Plus size={24} />
         <span className='sr-only'>新規投稿を作成</span>
       </Link>
     </main>
