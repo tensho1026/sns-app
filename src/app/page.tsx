@@ -11,15 +11,17 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { saveUserToDatabase } from "@/features/saveUserToDatabase";
 import { getAllPosts } from "@/features/getAllPosts";
+import { getLikeData } from "@/features/getLikesForPosts";
+import { toggleLike } from "@/features/likeAction";
 
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [posts, setPosts] = useState<any[]>([]);
+  const [likes, setLikes] = useState<Record<string, { count: number; liked: boolean }>>({});
 
   useEffect(() => {
     const saveUserData = async () => {
       if (isLoaded && isSignedIn && user) {
-        console.log("🟢 ユーザー情報ロード完了:", user);
         await saveUserToDatabase(user);
       }
     };
@@ -27,17 +29,41 @@ export default function Home() {
   }, [user, isLoaded, isSignedIn]);
 
   useEffect(() => {
-    getAllPosts().then((posts) => {
+    getAllPosts().then(async (posts) => {
       setPosts(posts);
+      if (user?.id) {
+        const likeData: Record<string, { count: number; liked: boolean }> = {};
+        for (const post of posts) {
+          const { count, liked } = await getLikeData(post.id, user.id);
+          likeData[post.id] = { count, liked };
+        }
+        setLikes(likeData);
+      }
     });
-  }, []);
+  }, [user?.id]);
+
+  const handleToggleLike = async (postId: string) => {
+    if (!user) return;
+    const result = await toggleLike(postId, user.id);
+    setLikes((prev) => {
+      const prevCount = prev[postId]?.count || 0;
+      const newCount = result.liked ? prevCount + 1 : prevCount - 1;
+      return {
+        ...prev,
+        [postId]: {
+          count: newCount,
+          liked: result.liked,
+        },
+      };
+    });
+  };
 
   return (
     <main className="min-h-screen bg-gray-100">
       <header className="bg-white p-4 shadow-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-800">SNSアプリ</h1>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 scale-150">
             <UserButton />
           </div>
         </div>
@@ -45,13 +71,7 @@ export default function Home() {
 
       <div className="max-w-2xl mx-auto pt-4 pb-20">
         {posts.map((post) => (
-          
-          <div
-            key={post.id}
-            className="bg-white rounded-lg shadow mb-4 overflow-hidden"
-            
-          >
-            
+          <div key={post.id} className="bg-white rounded-lg shadow mb-4 overflow-hidden">
             <div className="p-4">
               <div className="flex justify-between items-start">
                 <div className="flex items-center">
@@ -77,15 +97,17 @@ export default function Home() {
               <p className="my-3">{post.content}</p>
               {post.image_url && (
                 <div className="mt-2 rounded-lg overflow-hidden">
-                  
                   <img src={post.image_url} alt="投稿画像" className="w-full h-auto" />
                 </div>
               )}
               <div className="mt-4 flex justify-between text-gray-500">
                 <div className="flex items-center space-x-1">
-                  <button className="flex items-center hover:text-red-500 transition-colors">
+                  <button
+                    onClick={() => handleToggleLike(post.id)}
+                    className={`flex items-center transition-colors ${likes[post.id]?.liked ? "text-red-500" : "hover:text-red-500"}`}
+                  >
                     <Heart size={18} className="mr-1" />
-                    <span>0</span>
+                    <span>{likes[post.id]?.count ?? 0}</span>
                   </button>
                 </div>
                 <div className="flex items-center space-x-1">
@@ -94,9 +116,7 @@ export default function Home() {
                     <span>0</span>
                   </button>
                 </div>
-                <div className="text-sm">
-                  {new Date(post.created_at).toLocaleString()}
-                </div>
+                <div className="text-sm">{new Date(post.created_at).toLocaleString()}</div>
               </div>
             </div>
           </div>
