@@ -5,33 +5,47 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState } from "react";
 import { createPost } from "@/features/createPost";
+import { uploadImage } from "@/features/uploadImage";
 
 export default function CreatePost() {
   const user = useUser();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [content, setContent] = useState("");
-
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
+      setImageFile(file);
     }
   };
 
   const handleCreatePost = async () => {
     if (!user.isSignedIn || !user.user) return;
-  
+
+    let imageUrl = "";
+
+    if (imageFile) {
+      const uploadedUrl = await uploadImage(imageFile);
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      }
+    }
+    
+
     await createPost({
       userId: user.user.id,
-      content: content,
-      imageUrl: previewUrl ?? "", // プレビューURLをそのまま仮で保存
+      content,
+      imageUrl,
     });
-  
-    // 成功後の処理（例: リダイレクトやstateリセット）
+
+    
+    // リセット
     setContent("");
     setPreviewUrl(null);
+    setImageFile(null);
   };
 
   return (
