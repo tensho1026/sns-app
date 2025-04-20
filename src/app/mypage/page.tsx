@@ -10,8 +10,9 @@ import { getLikeData } from "@/features/getLikesForPosts";
 import { toggleLike } from "@/features/likeAction";
 import { getOtherPosts } from "@/features/getOtherPosts";
 import { getMyPosts } from "@/features/getMyPosts";
+import { deletePost } from "@/features/deletePost";
 
-export default function Home() {
+export default function Mypage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [posts, setPosts] = useState<any[]>([]);
   const [likes, setLikes] = useState<
@@ -30,7 +31,7 @@ export default function Home() {
   useEffect(() => {
     if (!user?.id) return;
 
-    getOtherPosts(user.id).then(async (posts) => {
+    getMyPosts(user.id).then(async (posts) => {
       setPosts(posts);
 
       const likeData: Record<string, { count: number; liked: boolean }> = {};
@@ -60,15 +61,6 @@ export default function Home() {
 
   return (
     <main className='min-h-screen bg-gray-100'>
-      {/* <header className='bg-white p-4 shadow-sm sticky top-0 z-10'>
-        <div className='max-w-2xl mx-auto flex justify-between items-center'>
-          <h1 className='text-xl font-bold text-gray-800'>SNSアプリ</h1>
-          <div className='flex items-center space-x-4 scale-150'>
-            <UserButton />
-          </div>
-        </div>
-      </header> */}
-
       <div className='max-w-2xl mx-auto pt-4 pb-20'>
         {posts.map((post) => (
           <div
@@ -90,14 +82,17 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                {/* <div className='flex items-center'>
+                <div className='flex items-center'>
                   <button
                     className='text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors'
                     aria-label='投稿を削除'
+                    onClick={async () => {
+                      await deletePost(post.id);
+                      setPosts((prev) => prev.filter((p) => p.id !== post.id))}}
                   >
                     <Trash2 size={18} />
                   </button>
-                </div> */}
+                </div>
               </div>
               <p className='my-3'>{post.content}</p>
               {post.image_url && (
