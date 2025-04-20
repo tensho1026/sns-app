@@ -36,6 +36,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <header className='bg-white p-4 shadow-sm sticky top-0 z-10'>
+        <div className='max-w-2xl mx-auto flex justify-between items-center'>
+          <h1 className='text-xl font-bold text-gray-800'>SNSアプリ</h1>
+          <div className='flex items-center space-x-4 scale-150'>
+            <UserButton />
+          </div>
+        </div>
+      </header>
           {children}
         </body>
       </html>
