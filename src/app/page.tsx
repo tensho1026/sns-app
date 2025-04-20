@@ -11,14 +11,12 @@ import { toggleLike } from "@/features/likeAction";
 import { getOtherPosts } from "@/features/getOtherPosts";
 import { getMyPosts } from "@/features/getMyPosts";
 
-export default  function Home() {
+export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [posts, setPosts] = useState<any[]>([]);
   const [likes, setLikes] = useState<
     Record<string, { count: number; liked: boolean }>
   >({});
-
- 
 
   useEffect(() => {
     const saveUserData = async () => {
@@ -81,13 +79,15 @@ export default  function Home() {
               <div className='flex justify-between items-start'>
                 <div className='flex items-center'>
                   <img
-                    src={post.avatar || "/placeholder.svg"}
+                    src={post.User.icon || "/placeholder.svg"}
                     alt={post.username || "user"}
                     className='w-10 h-10 rounded-full mr-3'
                   />
                   <div>
                     <div className='font-semibold'>{post.username}</div>
-                    <div className='text-gray-500 text-sm'>@{post.user_id}</div>
+                    <div className='text-gray-500 text-sm'>
+                      {post.User.username}
+                    </div>
                   </div>
                 </div>
                 <div className='flex items-center'>
