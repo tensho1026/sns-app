@@ -3,8 +3,18 @@ import { NextResponse } from "next/server";
 
 export async function getMyPosts(userId: string) {
   const { data, error } = await supabase
+
     .from("posts")
-    .select("*")
+    .select(
+      `
+      *,
+      User (
+        username,
+        icon
+      )
+    `
+    )
+    // .select("*, User(username, icon)") こっちかもしれない
 
     .eq("user_id", userId)
     .order("created_at", { ascending: false }); // 新しい順に並べる
