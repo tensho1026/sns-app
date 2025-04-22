@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import { Plus, Trash2, Heart, MessageCircle } from "lucide-react";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { saveUserToDatabase } from "@/features/saveUserToDatabase";
-import { getAllPosts } from "@/features/getAllPosts";
 import { getLikeData } from "@/features/getLikesForPosts";
 import { toggleLike } from "@/features/likeAction";
-import { getOtherPosts } from "@/features/getOtherPosts";
 import { getMyPosts } from "@/features/getMyPosts";
 import { deletePost } from "@/features/deletePost";
 

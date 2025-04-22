@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, Trash2, Heart, MessageCircle } from "lucide-react";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { Plus, Heart, MessageCircle } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { saveUserToDatabase } from "@/features/saveUserToDatabase";
-import { getAllPosts } from "@/features/getAllPosts";
 import { getLikeData } from "@/features/getLikesForPosts";
 import { toggleLike } from "@/features/likeAction";
 import { getOtherPosts } from "@/features/getOtherPosts";
-import { getMyPosts } from "@/features/getMyPosts";
 
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -60,14 +58,7 @@ export default function Home() {
 
   return (
     <main className='min-h-screen bg-gray-100'>
-      {/* <header className='bg-white p-4 shadow-sm sticky top-0 z-10'>
-        <div className='max-w-2xl mx-auto flex justify-between items-center'>
-          <h1 className='text-xl font-bold text-gray-800'>SNSアプリ</h1>
-          <div className='flex items-center space-x-4 scale-150'>
-            <UserButton />
-          </div>
-        </div>
-      </header> */}
+    
 
       <div className='max-w-2xl mx-auto pt-4 pb-20'>
         {posts.map((post) => (
@@ -90,14 +81,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                {/* <div className='flex items-center'>
-                  <button
-                    className='text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors'
-                    aria-label='投稿を削除'
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div> */}
+                
               </div>
               <p className='my-3'>{post.content}</p>
               {post.image_url && (
