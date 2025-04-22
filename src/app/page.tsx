@@ -83,7 +83,7 @@ export default function Home() {
                     className='w-10 h-10 rounded-full mr-3'
                   />
                   <div>
-                    <div className='font-semibold'>{post.username}</div>
+                    {/* <div className='font-semibold'>{post.username}</div> */}
                     <div className='text-gray-500 text-sm'>
                       {post.User.username}
                     </div>
@@ -128,7 +128,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            {replyVisibility[post.id] && <PostReply />}
+            {replyVisibility[post.id] && <PostReply postId={post.id} />}
           </div>
         ))}
       </div>
