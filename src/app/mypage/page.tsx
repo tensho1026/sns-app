@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus, Trash2, Heart, MessageCircle } from "lucide-react";
+import { Plus, Trash2, Heart, MessageCircle, Home } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { saveUserToDatabase } from "@/features/saveUserToDatabase";
@@ -9,6 +9,7 @@ import { getLikeData } from "@/features/getLikesForPosts";
 import { toggleLike } from "@/features/likeAction";
 import { getMyPosts } from "@/features/getMyPosts";
 import { deletePost } from "@/features/deletePost";
+import { Button } from "@/components/ui/button";
 
 export default function Mypage() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -58,7 +59,19 @@ export default function Mypage() {
   };
 
   return (
-    <main className='min-h-screen bg-gray-100'>
+    <main className='relative min-h-screen bg-gray-100'>
+      <div className='absolute'>
+        <Link href='/'>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='rounded-full hover:bg-gray-100'
+          >
+            <Home className='h-6 w-6' />
+            <span className='sr-only'>Home</span>
+          </Button>
+        </Link>
+      </div>
       <div className='max-w-2xl mx-auto pt-4 pb-20'>
         {posts.map((post) => (
           <div
@@ -86,7 +99,8 @@ export default function Mypage() {
                     aria-label='投稿を削除'
                     onClick={async () => {
                       await deletePost(post.id);
-                      setPosts((prev) => prev.filter((p) => p.id !== post.id))}}
+                      setPosts((prev) => prev.filter((p) => p.id !== post.id));
+                    }}
                   >
                     <Trash2 size={18} />
                   </button>

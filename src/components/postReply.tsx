@@ -10,11 +10,16 @@ import { getReply } from "@/features/getReply";
 export default function PostReply({ postId }: { postId: string }) {
   const [content, setContent] = useState("");
   const { user } = useUser();
+  const [replies, setReplies] = useState<any[]>([]);
 
   const getcomment = async () => {
-    const data = await getReply();
+    const data = await getReply(postId);
     console.log(data);
+    setReplies(data || []);
   };
+  useEffect(() => {
+    getcomment();
+  }, [postId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +56,8 @@ export default function PostReply({ postId }: { postId: string }) {
           </div>
         </form>
       </CardContent>
-      <CardContent>
+      {replies.map((reply, index) => (
+      <CardContent key={reply.id || index}>
         <div className='bg-white rounded-lg  mb-4 overflow-hidden'>
           <div className='p-4'>
             <div className='flex justify-between items-start'>
@@ -62,14 +68,15 @@ export default function PostReply({ postId }: { postId: string }) {
                   className='w-10 h-10 rounded-full mr-3'
                 />
                 <div>
-                  <div className='text-gray-500 text-sm w-full'>白川天翔</div>
+                  <div className='text-gray-500 text-sm w-full'>{reply.user_id}</div>
                 </div>
               </div>
             </div>
-            <p className='my-3'>これは返信用です</p>
+            <p className='my-3'>{reply.content}</p>
           </div>
         </div>
       </CardContent>
+      ))}
     </div>
   );
 }
