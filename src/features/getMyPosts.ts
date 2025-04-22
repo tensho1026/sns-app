@@ -1,5 +1,4 @@
 import { supabase } from "@/supabase/supabase.config";
-import { NextResponse } from "next/server";
 
 export async function getMyPosts(userId: string) {
   const { data, error } = await supabase
