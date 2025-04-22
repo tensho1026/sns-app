@@ -8,6 +8,7 @@ import { saveUserToDatabase } from "@/features/saveUserToDatabase";
 import { getLikeData } from "@/features/getLikesForPosts";
 import { toggleLike } from "@/features/likeAction";
 import { getOtherPosts } from "@/features/getOtherPosts";
+import PostReply from "@/components/postReply";
 
 export default function Home() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -15,7 +16,9 @@ export default function Home() {
   const [likes, setLikes] = useState<
     Record<string, { count: number; liked: boolean }>
   >({});
-
+  const [replyVisibility, setReplyVisibility] = useState<
+    Record<string, boolean>
+  >({});
   useEffect(() => {
     const saveUserData = async () => {
       if (isLoaded && isSignedIn && user) {
@@ -56,10 +59,15 @@ export default function Home() {
     });
   };
 
+  const toggleReply = (postId: string) => {
+    setReplyVisibility((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
   return (
     <main className='min-h-screen bg-gray-100'>
-    
-
       <div className='max-w-2xl mx-auto pt-4 pb-20'>
         {posts.map((post) => (
           <div
@@ -81,7 +89,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                
               </div>
               <p className='my-3'>{post.content}</p>
               {post.image_url && (
@@ -108,7 +115,10 @@ export default function Home() {
                   </button>
                 </div>
                 <div className='flex items-center space-x-1'>
-                  <button className='flex items-center hover:text-blue-500 transition-colors'>
+                  <button
+                    className='flex items-center hover:text-blue-500 transition-colors '
+                    onClick={() => toggleReply(post.id)}
+                  >
                     <MessageCircle size={18} className='mr-1' />
                     <span>0</span>
                   </button>
@@ -118,6 +128,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {replyVisibility[post.id] && <PostReply />}
           </div>
         ))}
       </div>
